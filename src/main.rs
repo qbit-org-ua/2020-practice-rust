@@ -108,7 +108,7 @@ fn main() {
 
     vector.sort_unstable();
     vector.reverse();
-    let new_vector = vector.into_iter().rev().collect();
+    let new_vector: Vec<_> = vector.into_iter().rev().collect();
     let b: bool = true; // false;
 }
 
