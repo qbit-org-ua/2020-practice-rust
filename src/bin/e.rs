@@ -12,6 +12,6 @@ fn main() {
     // a=3 b=9 (3, 6, 9) = 3
     // (0; 9] = 9 / 3 = 3
     // (0; 3) = (0; 2] = 2 / 3 = 0
-    let ans = numbers[1] / 3 - (numbers[0] - 3) / 3;
+    let ans = numbers[1].div_euclid(3) - (numbers[0] - 1).div_euclid(3);
     println!("{}", ans);
 }
