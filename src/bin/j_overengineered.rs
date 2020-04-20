@@ -56,6 +56,7 @@ impl std::ops::AddAssign for Point {
 }
 
 /// Направление движения
+#[derive(Clone, Copy)]
 enum Direction {
     North,
     East,
@@ -70,33 +71,33 @@ impl Default for Direction {
 }
 
 impl Direction {
-    /// Создать направление из числового представления.
-    fn from_number(direction: u8) -> Self {
-        match direction % 4 {
-            0 => Direction::North,
-            1 => Direction::East,
-            2 => Direction::South,
-            3 => Direction::West,
-            _ => unreachable!(),
+    /// Получить новое направление при повороте налево
+    fn turn_right(self) -> Direction {
+        match self {
+            Direction::North => Direction::East,
+            Direction::East => Direction::South,
+            Direction::South => Direction::West,
+            Direction::West => Direction::North,
         }
     }
 
-    /// Получить числовое представление направления.
-    fn as_number(&self) -> u8 {
+    /// Получить новое направление при повороте налево
+    fn turn_left(self) -> Direction {
         match self {
-            Direction::North => 0,
-            Direction::East => 1,
-            Direction::South => 2,
-            Direction::West => 3,
+            Direction::North => Direction::West,
+            Direction::East => Direction::North,
+            Direction::South => Direction::East,
+            Direction::West => Direction::South,
         }
     }
 
     /// Получить вектор направления движения.
-    fn as_vector(&self) -> Point {
-        let number = i64::from(self.as_number());
-        Point {
-            x: ((number - 2) * -1) % 2,
-            y: ((number - 1) * -1) % 2,
+    fn to_vector(&self) -> Point {
+        match self {
+            Direction::North => Point { x: 0, y: 1 },
+            Direction::East => Point { x: 1, y: 0 },
+            Direction::South => Point { x: 0, y: -1 },
+            Direction::West => Point { x: -1, y: 0 },
         }
     }
 }
@@ -113,9 +114,9 @@ impl Game {
     /// Применить следующий ход, записанный Ёжиком.
     fn apply(&mut self, action: &str) {
         match action {
-            "L" => self.direction = Direction::from_number(self.direction.as_number() + 3),
-            "R" => self.direction = Direction::from_number(self.direction.as_number() + 1),
-            "F" => self.position += self.direction.as_vector(),
+            "L" => self.direction = self.direction.turn_left(),
+            "R" => self.direction = self.direction.turn_right(),
+            "F" => self.position += self.direction.to_vector(),
             _ => panic!("Unknown action"),
         }
     }
