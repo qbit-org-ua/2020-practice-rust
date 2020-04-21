@@ -3,7 +3,9 @@ use std::convert::TryInto;
 
 use num_rational::Ratio;
 
-fn main() {
+fn main() {}
+
+fn _old4() {
     // фиксированный массив
     let four_ints: [i32; 4] = [1, 2, 3, 4];
     //let four_ints: [i32; 30] = [0; 30];
